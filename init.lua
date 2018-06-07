@@ -8,6 +8,7 @@ register_skybox({
 	name = "space",
 	miny = 1000,
 	maxy = 5000,
+	gravity = 0.8,
 	textures = {"space_sky.png","space_sky2.png","space_sky.png","space_sky.png","space_sky.png","space_sky.png"}
 })
 
@@ -15,6 +16,7 @@ register_skybox({
 	name = "moon",
 	miny = 5000,
 	maxy = 6000,
+	gravity = 0.1654,
 	textures = {"space_sky.png","space_sky.png","space_sky.png","space_sky.png","space_sky.png","space_sky.png"}
 })
 
@@ -43,6 +45,7 @@ local update_skybox = function(player)
 
 				player:set_sky({r=0, g=0, b=0},"skybox", box.textures)
 				player:set_clouds({density=0,speed=0})
+				player:set_physics_override({gravity=box.gravity})
 				return
 			end
 		end
@@ -59,6 +62,7 @@ local update_skybox = function(player)
 		height=120,
 		speed={y=-2,x=0}
 	})
+	player:set_physics_override({gravity=1})
 
 end
 
