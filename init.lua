@@ -37,6 +37,7 @@ local update_skybox = function(player)
 
 			if current_skybox == box.name then
 				-- already active
+				player:set_physics_override({gravity=box.gravity})
 				return
 
 			else
