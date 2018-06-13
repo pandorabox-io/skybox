@@ -63,7 +63,7 @@ local update_skybox = function(player)
 		height=120,
 		speed={y=-2,x=0}
 	})
-	player:set_physics_override({gravity=1})
+	player:set_physics_override({gravity=1, jump=1})
 
 end
 
