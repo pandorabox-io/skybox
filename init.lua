@@ -14,10 +14,18 @@ register_skybox({
 
 register_skybox({
 	name = "moon",
-	miny = 5000,
+	miny = 5001,
 	maxy = 6000,
 	gravity = 0.1654,
 	textures = {"space_sky.png","space_sky.png","space_sky.png","space_sky.png","space_sky.png","space_sky.png"}
+})
+
+register_skybox({
+	name = "deepspace"
+	miny = 6001,
+	maxy = 10000,
+	gravity = 0.1,
+	textures = {"sky_pos_y.png", "sky_neg_y.png", "sky_pos_z.png", "sky_neg_z.png", "sky_neg_x.png", "sky_pos_x.png"}
 })
 
 
