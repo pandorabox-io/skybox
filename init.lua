@@ -21,11 +21,19 @@ register_skybox({
 })
 
 register_skybox({
+	-- https://github.com/Ezhh/other_worlds/blob/master/skybox.lua
 	name = "deepspace",
 	miny = 6001,
 	maxy = 10000,
 	gravity = 0.1,
-	textures = {"sky_pos_y.png", "sky_neg_y.png", "sky_pos_z.png", "sky_neg_z.png", "sky_neg_x.png", "sky_pos_x.png"}
+	textures = {
+		"sky_pos_z.png",
+		"sky_neg_z.png^[transformR180",
+		"sky_neg_y.png^[transformR270",
+		"sky_pos_y.png^[transformR270",
+		"sky_pos_x.png^[transformR270",
+		"sky_neg_x.png^[transformR90"
+	}
 })
 
 
