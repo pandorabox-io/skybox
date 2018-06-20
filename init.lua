@@ -21,7 +21,7 @@ register_skybox({
 })
 
 register_skybox({
-	name = "deepspace"
+	name = "deepspace",
 	miny = 6001,
 	maxy = 10000,
 	gravity = 0.1,
