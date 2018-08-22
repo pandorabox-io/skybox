@@ -48,6 +48,9 @@ local update_skybox = function(player)
 	local pos = player:getpos()
 	local name = player:get_player_name()
 
+	local player_has_fly_privs = minetest.check_player_privs(name, {fly = true})
+	local player_is_admin = minetest.check_player_privs(name, {privs = true})
+
 	local current_skybox = skybox_cache[name]
 
 	for _,box in pairs(skybox_list) do
@@ -69,12 +72,29 @@ local update_skybox = function(player)
 				if box.always_day then
 					player:override_day_night_ratio(1)
 				end
+				if not player_is_admin then
+					local privs = minetest.get_player_privs(name)
+
+					if box.fly and not player_has_fly_privs then
+						privs.fly = true
+					end
+					if not box.fly and player_has_fly_privs then
+						privs.fly = nil
+					end
+					minetest.set_player_privs(name, privs)
+				end
 				return
 			end
 		end
 	end
 
 	-- no match, return to default
+	if not player_is_admin then
+		local privs = minetest.get_player_privs(name)
+		privs.fly = nil
+		minetest.set_player_privs(name, privs)
+	end
+
 	player:override_day_night_ratio(nil)
 	skybox_cache[name] = ""
 	player:set_sky({r=0, g=0, b=0},"regular",{})
