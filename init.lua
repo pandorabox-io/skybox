@@ -29,7 +29,7 @@ register_skybox({
 	miny = 6001,
 	maxy = 10000,
 	gravity = 0.1,
-	alyways_day = true,
+	always_day = true,
 	fly = true,
 	textures = {
 		"sky_pos_z.png",
