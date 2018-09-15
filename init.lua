@@ -83,11 +83,12 @@ local update_skybox = function(player)
 
 					if box.fly and not player_has_fly_privs then
 						privs.fly = true
+						minetest.set_player_privs(name, privs)
 					end
 					if not box.fly and player_has_fly_privs then
 						privs.fly = nil
+						minetest.set_player_privs(name, privs)
 					end
-					minetest.set_player_privs(name, privs)
 				end
 				return
 			end
@@ -97,8 +98,10 @@ local update_skybox = function(player)
 	-- no match, return to default
 	if not player_is_admin and not green_beacon_near then
 		local privs = minetest.get_player_privs(name)
-		privs.fly = nil
-		minetest.set_player_privs(name, privs)
+		if privs.fly then
+			privs.fly = nil
+			minetest.set_player_privs(name, privs)
+		end
 	end
 
 	player:override_day_night_ratio(nil)
@@ -118,7 +121,7 @@ end
 
 minetest.register_globalstep(function(dtime)
 	timer = timer + dtime
-	if timer < 1 then return end
+	if timer < 5 then return end
 	timer=0
 
 	for i, player in pairs(minetest.get_connected_players()) do
@@ -133,6 +136,8 @@ minetest.register_on_respawnplayer(function(player)
 end)
 
 minetest.register_on_joinplayer(function(player)
-	update_skybox(player)
+	minetest.after(0.1, function()
+		update_skybox(player)
+	end)
 end)
 
