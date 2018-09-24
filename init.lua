@@ -121,7 +121,7 @@ end
 
 minetest.register_globalstep(function(dtime)
 	timer = timer + dtime
-	if timer < 5 then return end
+	if timer < 1 then return end
 	timer=0
 
 	for i, player in pairs(minetest.get_connected_players()) do
