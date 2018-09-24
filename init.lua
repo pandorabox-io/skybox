@@ -69,6 +69,8 @@ local update_skybox = function(player)
 				return
 
 			else
+				minetest.log("action", "[skybox] Setting skybox: " .. box.name .. " for player " .. name)
+
 				-- new skybox
 				skybox_cache[name] = box.name
 
@@ -99,10 +101,18 @@ local update_skybox = function(player)
 	if not player_is_admin and not green_beacon_near then
 		local privs = minetest.get_player_privs(name)
 		if privs.fly then
+			minetest.log("action", "[skybox] revoking fly priv for player: " .. name)
 			privs.fly = nil
 			minetest.set_player_privs(name, privs)
 		end
 	end
+
+	if current_skybox == "" then
+		-- already in default
+		return
+	end
+
+	minetest.log("action", "[skybox] Restoring default skybox for player: " .. name)
 
 	player:override_day_night_ratio(nil)
 	skybox_cache[name] = ""
@@ -123,20 +133,25 @@ minetest.register_globalstep(function(dtime)
 	timer = timer + dtime
 	if timer < 1 then return end
 	timer=0
-
+	local t0 = minetest.get_us_time()
 	for i, player in pairs(minetest.get_connected_players()) do
 		update_skybox(player)
+	end
+	local t1 = minetest.get_us_time()
+	local delta_us = t1 -t0
+	if delta_us > 1000 then
+		minetest.log("warning", "[skybox] update took " .. delta_us .. " us")
 	end
 end)
 
 minetest.register_on_respawnplayer(function(player)
-	minetest.after(0.1,function()
+	minetest.after(1,function()
 		update_skybox(player)
 	end)
 end)
 
 minetest.register_on_joinplayer(function(player)
-	minetest.after(0.1, function()
+	minetest.after(1, function()
 		update_skybox(player)
 	end)
 end)
