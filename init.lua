@@ -139,7 +139,7 @@ minetest.register_globalstep(function(dtime)
 	end
 	local t1 = minetest.get_us_time()
 	local delta_us = t1 -t0
-	if delta_us > 1000 then
+	if delta_us > 5000 then
 		minetest.log("warning", "[skybox] update took " .. delta_us .. " us")
 	end
 end)
