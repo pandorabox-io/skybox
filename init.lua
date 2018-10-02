@@ -50,12 +50,8 @@ local update_skybox = function(player)
 	local pos = player:getpos()
 	local name = player:get_player_name()
 
-	local player_has_fly_privs = minetest.check_player_privs(name, {fly = true})
 	local player_is_admin = minetest.check_player_privs(name, {privs = true})
 	local green_beacon_near = nil
-	if has_beacon_mod then
-		green_beacon_near = minetest.find_node_near(pos, beacon.config.effects_radius, {"beacon:greenbase"})
-	end
 
 	local current_skybox = skybox_cache[name]
 
@@ -82,6 +78,7 @@ local update_skybox = function(player)
 				end
 				if not player_is_admin then
 					local privs = minetest.get_player_privs(name)
+					local player_has_fly_privs = privs.fly
 
 					if box.fly and not player_has_fly_privs then
 						privs.fly = true
@@ -95,6 +92,10 @@ local update_skybox = function(player)
 				return
 			end
 		end
+	end
+
+	if has_beacon_mod then
+		green_beacon_near = minetest.find_node_near(pos, beacon.config.effects_radius, {"beacon:greenbase"})
 	end
 
 	-- no match, return to default
