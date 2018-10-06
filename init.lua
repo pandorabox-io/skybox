@@ -50,6 +50,11 @@ local update_skybox = function(player)
 	local pos = player:getpos()
 	local name = player:get_player_name()
 
+	if not pos then
+		-- yeah, it happens apparently :)
+		return
+	end
+
 	local player_is_admin = minetest.check_player_privs(name, {privs = true})
 	local green_beacon_near = nil
 
