@@ -47,7 +47,9 @@ local skybox_cache = {} -- playername -> skybox name
 local priv_cache = {} -- playername -> {priv=}
 
 local update_skybox = function(player)
-	local pos = player:getpos()
+	local t0 = minetest.get_us_time()
+
+	local pos = player:get_pos()
 	local name = player:get_player_name()
 
 	if not pos then
@@ -100,6 +102,14 @@ local update_skybox = function(player)
 					end
 					priv_cache[name] = privs
 				end
+
+
+			        local t1 = minetest.get_us_time()
+			        local diff = t1 - t0
+			        if diff > 10000 then
+			                minetest.log("warning", "[skybox] update for player " .. name .. " took " .. diff .. " us")
+			        end
+
 				return
 			end
 		end
@@ -139,19 +149,25 @@ local update_skybox = function(player)
 	})
 	player:set_physics_override({gravity=1, jump=1})
 
+	local t1 = minetest.get_us_time()
+	local diff = t1 - t0
+	if diff > 10000 then
+		minetest.log("warning", "[skybox] update for player " .. name .. " took " .. diff .. " us")
+	end
 end
 
 minetest.register_globalstep(function(dtime)
 	timer = timer + dtime
-	if timer < 1 then return end
+	if timer < 2 then return end
 	timer=0
 	local t0 = minetest.get_us_time()
-	for i, player in pairs(minetest.get_connected_players()) do
+	local players = minetest.get_connected_players()
+	for i, player in pairs(players) do
 		update_skybox(player)
 	end
 	local t1 = minetest.get_us_time()
 	local delta_us = t1 -t0
-	if delta_us > 15000 then
+	if delta_us > 25000 then
 		minetest.log("warning", "[skybox] update took " .. delta_us .. " us")
 	end
 end)
