@@ -162,7 +162,7 @@ end
 
 minetest.register_globalstep(function(dtime)
 	timer = timer + dtime
-	if timer < 2 then return end
+	if timer < 3 then return end
 	timer=0
 	local t0 = minetest.get_us_time()
 	local players = minetest.get_connected_players()
