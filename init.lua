@@ -127,10 +127,12 @@ local update_skybox = function(player)
 					local player_has_fly_privs = privs.fly
 
 					if box.fly and not player_has_fly_privs then
+						privs = minetest.get_player_privs(name)
 						privs.fly = true
 						minetest.set_player_privs(name, privs)
 					end
 					if not box.fly and player_has_fly_privs then
+						privs = minetest.get_player_privs(name)
 						privs.fly = nil
 						minetest.set_player_privs(name, privs)
 					end
