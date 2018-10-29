@@ -1,5 +1,7 @@
 local has_beacon_mod = minetest.get_modpath("beacon")
 
+
+
 local skybox_list = {}
 
 local register_skybox = function(def)
@@ -14,6 +16,7 @@ register_skybox({
 	textures = {"space_sky.png","space_sky2.png","space_sky.png","space_sky.png","space_sky.png","space_sky.png"}
 })
 
+-- moon
 register_skybox({
 	name = "moon",
 	miny = 5001,
@@ -23,11 +26,13 @@ register_skybox({
 	textures = {"space_sky.png","space_sky.png","space_sky.png","space_sky.png","space_sky.png","space_sky.png"}
 })
 
+
+-- speep space
 register_skybox({
 	-- https://github.com/Ezhh/other_worlds/blob/master/skybox.lua
 	name = "deepspace",
 	miny = 6001,
-	maxy = 10000,
+	maxy = 10999,
 	gravity = 0.1,
 	always_day = true,
 	fly = true,
@@ -41,6 +46,31 @@ register_skybox({
 	}
 })
 
+-- mars
+register_skybox({
+	-- http://www.custommapmakers.org/skyboxes.php
+	name = "mars",
+	miny = 11000,
+	maxy = 11999,
+	gravity = 0.37,
+	always_day = true,
+	clouds = {
+		thickness=16,
+		color={r=244, g=189, b=114, a=229},
+		ambient={r=0, g=0, b=0, a=255},
+		density=0.4,
+		height=11300,
+		speed={y=-2,x=0}
+	},
+	textures = {
+		"mars_up.jpg^[transformR270",
+		"mars_dn.jpg^[transformR90",
+		"mars_ft.jpg",
+		"mars_bk.jpg",
+		"mars_lf.jpg",
+		"mars_rt.jpg"
+	}
+})
 
 local timer = 0
 local skybox_cache = {} -- playername -> skybox name
@@ -83,7 +113,7 @@ local update_skybox = function(player)
 				skybox_cache[name] = box.name
 
 				player:set_sky({r=0, g=0, b=0},"skybox", box.textures)
-				player:set_clouds({density=0,speed=0})
+				player:set_clouds(box.clouds or {density=0,speed=0})
 				player:set_physics_override({gravity=box.gravity})
 				if box.always_day then
 					player:override_day_night_ratio(1)
@@ -155,7 +185,7 @@ end
 
 minetest.register_globalstep(function(dtime)
 	timer = timer + dtime
-	if timer < 3 then return end
+	if timer < 1 then return end
 	timer=0
 	local t0 = minetest.get_us_time()
 	local players = minetest.get_connected_players()
