@@ -74,6 +74,7 @@ register_skybox({
 
 local timer = 0
 local skybox_cache = {} -- playername -> skybox name
+local priv_cache = {} -- playername -> {priv=}
 
 local update_skybox = function(player)
 	local t0 = minetest.get_us_time()
@@ -86,7 +87,11 @@ local update_skybox = function(player)
 		return
 	end
 
-	local privs = minetest.get_player_privs(name)
+	local privs = priv_cache[name]
+
+	if not privs then
+		privs = minetest.get_player_privs(name)
+	end
 
 	local player_is_admin = privs.privs
 	local green_beacon_near = nil
@@ -129,6 +134,7 @@ local update_skybox = function(player)
 						privs.fly = nil
 						minetest.set_player_privs(name, privs)
 					end
+					priv_cache[name] = privs
 				end
 
 
@@ -153,6 +159,7 @@ local update_skybox = function(player)
 			minetest.log("action", "[skybox] revoking fly priv for player: " .. name)
 			privs.fly = nil
 			minetest.set_player_privs(name, privs)
+			priv_cache[name] = privs
 		end
 	end
 
