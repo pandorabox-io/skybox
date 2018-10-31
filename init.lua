@@ -183,6 +183,12 @@ minetest.register_globalstep(function(dtime)
 	end
 end)
 
+minetest.register_on_leaveplayer(function(player)
+	-- clear cache
+	local name = player:get_player_name()
+	skybox_cache[name] = nil
+end)
+
 minetest.register_on_respawnplayer(function(player)
 	minetest.after(2,function()
 		update_skybox(player)
