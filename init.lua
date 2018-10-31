@@ -96,7 +96,7 @@ local update_skybox = function(player)
 				local sky_type = box.sky_type or "skybox"
 				local sky_color = box.sky_color or {r=0, g=0, b=0}
 
-				player:set_sky({r=0, g=0, b=0}, sky_type, box.textures)
+				player:set_sky(sky_color, sky_type, box.textures or {})
 				player:set_clouds(box.clouds or {density=0,speed=0})
 				player:set_physics_override({gravity=box.gravity})
 				if box.always_day then
