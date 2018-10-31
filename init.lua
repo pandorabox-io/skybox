@@ -1,14 +1,14 @@
 local has_beacon_mod = minetest.get_modpath("beacon")
-
+skybox = {}
 
 
 local skybox_list = {}
 
-local register_skybox = function(def)
+skybox.register = function(def)
 	table.insert(skybox_list, def)
 end
 
-register_skybox({
+skybox.register({
 	name = "space",
 	miny = 1000,
 	maxy = 5000,
@@ -17,7 +17,7 @@ register_skybox({
 })
 
 -- moon
-register_skybox({
+skybox.register({
 	name = "moon",
 	miny = 5001,
 	maxy = 6000,
@@ -28,7 +28,7 @@ register_skybox({
 
 
 -- speep space
-register_skybox({
+skybox.register({
 	-- https://github.com/Ezhh/other_worlds/blob/master/skybox.lua
 	name = "deepspace",
 	miny = 6001,
@@ -46,31 +46,6 @@ register_skybox({
 	}
 })
 
--- mars
-register_skybox({
-	-- http://www.custommapmakers.org/skyboxes.php
-	name = "mars",
-	miny = 11000,
-	maxy = 11999,
-	gravity = 0.37,
-	always_day = true,
-	clouds = {
-		thickness=16,
-		color={r=244, g=189, b=114, a=229},
-		ambient={r=0, g=0, b=0, a=255},
-		density=0.4,
-		height=11300,
-		speed={y=-2,x=0}
-	},
-	textures = {
-		"mars_up.jpg^[transformR270",
-		"mars_dn.jpg^[transformR90",
-		"mars_ft.jpg",
-		"mars_bk.jpg",
-		"mars_lf.jpg",
-		"mars_rt.jpg"
-	}
-})
 
 local timer = 0
 local skybox_cache = {} -- playername -> skybox name
