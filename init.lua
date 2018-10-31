@@ -5,6 +5,7 @@ skybox = {}
 local skybox_list = {}
 
 skybox.register = function(def)
+	print("[skybox] registering " .. def.name .. " from " .. def.miny .. " to " .. def.maxy)
 	table.insert(skybox_list, def)
 end
 
@@ -92,7 +93,10 @@ local update_skybox = function(player)
 				-- new skybox
 				skybox_cache[name] = box.name
 
-				player:set_sky({r=0, g=0, b=0},"skybox", box.textures)
+				local sky_type = box.sky_type or "skybox"
+				local sky_color = box.sky_color or {r=0, g=0, b=0}
+
+				player:set_sky({r=0, g=0, b=0}, sky_type, box.textures)
 				player:set_clouds(box.clouds or {density=0,speed=0})
 				player:set_physics_override({gravity=box.gravity})
 				if box.always_day then
