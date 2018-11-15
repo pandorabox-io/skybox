@@ -96,6 +96,11 @@ local update_skybox = function(player)
 				-- new skybox
 				skybox_cache[name] = box.name
 
+				if box.message then
+					-- send skybox message
+					minetest.chat_send_player(name, box.message)
+				end
+
 				local sky_type = box.sky_type or "skybox"
 				local sky_color = box.sky_color or {r=0, g=0, b=0}
 
