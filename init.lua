@@ -9,6 +9,7 @@ skybox.register = function(def)
 	table.insert(skybox_list, def)
 end
 
+-- TODO: move to own mod
 skybox.register({
 	name = "space",
 	miny = 1000,
@@ -18,6 +19,7 @@ skybox.register({
 })
 
 -- moon
+-- TODO: move to own mod
 skybox.register({
 	name = "moon",
 	miny = 5001,
@@ -29,6 +31,7 @@ skybox.register({
 
 
 -- speep space
+-- TODO: move to own mod
 skybox.register({
 	-- https://github.com/Ezhh/other_worlds/blob/master/skybox.lua
 	name = "deepspace",
