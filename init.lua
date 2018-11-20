@@ -84,7 +84,7 @@ local update_skybox = function(player)
 			if current_skybox == box.name then
 				-- already active
 
-				if math.random(3) == 1 then
+				if math.random(10) == 1 then
 					-- randomize
 					player:set_physics_override({gravity=box.gravity})
 				end
