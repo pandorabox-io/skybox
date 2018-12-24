@@ -1,4 +1,5 @@
 local has_beacon_mod = minetest.get_modpath("beacon")
+local has_armor_mod = minetest.get_modpath("3d_armor")
 skybox = {}
 
 
@@ -83,11 +84,7 @@ local update_skybox = function(player)
 
 			if current_skybox == box.name then
 				-- already active
-
-				if math.random(10) == 1 then
-					-- randomize
-					player:set_physics_override({gravity=box.gravity})
-				end
+				player:set_physics_override({gravity=box.gravity})
 				return
 
 			else
@@ -177,6 +174,11 @@ local update_skybox = function(player)
 	if diff > 10000 then
 		minetest.log("warning", "[skybox] update for player " .. name .. " took " .. diff .. " us")
 	end
+end
+
+if has_armor_mod then
+	-- update physics if armor changed
+	armor:register_on_update(update_skybox)
 end
 
 minetest.register_globalstep(function(dtime)
