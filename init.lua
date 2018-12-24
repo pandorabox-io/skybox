@@ -171,7 +171,7 @@ local update_skybox = function(player)
 
 	local t1 = minetest.get_us_time()
 	local diff = t1 - t0
-	if diff > 10000 then
+	if diff > 20000 then
 		minetest.log("warning", "[skybox] update for player " .. name .. " took " .. diff .. " us")
 	end
 end
@@ -192,7 +192,7 @@ minetest.register_globalstep(function(dtime)
 	end
 	local t1 = minetest.get_us_time()
 	local delta_us = t1 -t0
-	if delta_us > 25000 then
+	if delta_us > 150000 then
 		minetest.log("warning", "[skybox] update took " .. delta_us .. " us")
 	end
 end)
