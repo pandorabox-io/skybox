@@ -2,8 +2,15 @@ local has_beacon_mod = minetest.get_modpath("beacon")
 local has_armor_mod = minetest.get_modpath("3d_armor")
 skybox = {}
 
-
+local fly_near = {} -- [{ name="", distance=0 }]
 local skybox_list = {}
+
+if has_beacon_mod then
+	table.insert(fly_near, {
+		name="beacon:greenbase",
+		distance=20
+	})
+end
 
 skybox.register = function(def)
 	print("[skybox] registering " .. def.name .. " from " .. def.miny .. " to " .. def.maxy)
@@ -56,6 +63,44 @@ local timer = 0
 local skybox_cache = {} -- playername -> skybox name
 local priv_cache = {} -- playername -> {priv=}
 
+local update_player_fly = function(player, privs, can_fly)
+	local player_is_admin = privs.privs
+	local name = player:get_player_name()
+
+	if player_is_admin then
+		-- not touching admin privs
+		return
+	end
+
+	if privs.fly and can_fly then
+		-- already fly granted
+		return
+	end
+
+	if not privs.fly and not can_fly then
+		-- no fly
+		return
+	end
+
+	if not privs.fly and can_fly then
+		-- grant fly
+		privs = minetest.get_player_privs(name)
+		privs.fly = true
+		minetest.set_player_privs(name, privs)
+		priv_cache[name] = privs
+		return
+	end
+
+	if privs.fly and not can_fly then
+		-- revoke fly
+		privs = minetest.get_player_privs(name)
+		privs.fly = nil
+		minetest.set_player_privs(name, privs)
+		priv_cache[name] = privs
+		return
+	end
+end
+
 local update_skybox = function(player)
 	local t0 = minetest.get_us_time()
 
@@ -74,7 +119,14 @@ local update_skybox = function(player)
 	end
 
 	local player_is_admin = privs.privs
-	local green_beacon_near = nil
+
+	local is_near_fly_node = false
+	for _, def in pairs(fly_near) do
+		if minetest.find_node_near(pos, def.distance, {def.name}) then
+			is_near_fly_node = true
+			break
+		end
+	end
 
 	local current_skybox = skybox_cache[name]
 
@@ -85,6 +137,7 @@ local update_skybox = function(player)
 			if current_skybox == box.name then
 				-- already active
 				player:set_physics_override({gravity=box.gravity})
+				update_player_fly(player, privs, is_near_fly_node or box.fly)
 				return
 
 			else
@@ -107,21 +160,7 @@ local update_skybox = function(player)
 				if box.always_day then
 					player:override_day_night_ratio(1)
 				end
-				if not player_is_admin then
-					local player_has_fly_privs = privs.fly
-
-					if box.fly and not player_has_fly_privs then
-						privs = minetest.get_player_privs(name)
-						privs.fly = true
-						minetest.set_player_privs(name, privs)
-					end
-					if not box.fly and player_has_fly_privs then
-						privs = minetest.get_player_privs(name)
-						privs.fly = nil
-						minetest.set_player_privs(name, privs)
-					end
-					priv_cache[name] = privs
-				end
+				update_player_fly(player, privs, is_near_fly_node or box.fly)
 
 
 			        local t1 = minetest.get_us_time()
@@ -135,19 +174,8 @@ local update_skybox = function(player)
 		end
 	end
 
-	if has_beacon_mod then
-		green_beacon_near = minetest.find_node_near(pos, beacon.config.effects_radius, {"beacon:greenbase"})
-	end
-
 	-- no match, return to default
-	if not player_is_admin and not green_beacon_near then
-		if privs.fly then
-			minetest.log("action", "[skybox] revoking fly priv for player: " .. name)
-			privs.fly = nil
-			minetest.set_player_privs(name, privs)
-			priv_cache[name] = privs
-		end
-	end
+	update_player_fly(player, privs, is_near_fly_node)
 
 	if current_skybox == "" then
 		-- already in default
