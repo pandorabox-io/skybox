@@ -58,6 +58,15 @@ skybox.register({
 	}
 })
 
+skybox.register({
+	name = "earth_cave",
+	miny = -32000,
+	maxy = -50,
+	gravity = 1,
+	sky_type = "regular",
+	sky_color = {r=0, g=0, b=0}
+})
+
 
 local timer = 0
 local skybox_cache = {} -- playername -> skybox name
