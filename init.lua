@@ -63,7 +63,7 @@ skybox.register({
 	miny = -32000,
 	maxy = -50,
 	gravity = 1,
-	sky_type = "regular",
+	sky_type = "plain",
 	sky_color = {r=0, g=0, b=0}
 })
 
@@ -251,4 +251,3 @@ minetest.register_on_joinplayer(function(player)
 		update_skybox(player)
 	end)
 end)
-
