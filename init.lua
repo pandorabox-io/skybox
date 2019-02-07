@@ -201,7 +201,7 @@ local update_skybox = function(player)
 		color={r=243, g=214, b=255, a=229},
 		ambient={r=0, g=0, b=0, a=255},
 		density=0.4,
-		height=150,
+		height=200,
 		speed={y=-2,x=-1}
 	})
 	player:set_physics_override({gravity=1, jump=1})
