@@ -125,6 +125,7 @@ local update_skybox = function(player)
 
 	if not privs then
 		privs = minetest.get_player_privs(name)
+		priv_cache[name] = privs
 	end
 
 	local player_is_admin = privs.privs
