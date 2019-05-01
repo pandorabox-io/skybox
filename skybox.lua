@@ -83,11 +83,11 @@ local update_skybox = function(player)
 				skybox.update_player_fly(player, privs, is_near_fly_node or box.fly)
 
 
-			        local t1 = minetest.get_us_time()
-			        local diff = t1 - t0
-			        if diff > 10000 then
-			                minetest.log("warning", "[skybox] update for player " .. name .. " took " .. diff .. " us")
-			        end
+        local t1 = minetest.get_us_time()
+        local diff = t1 - t0
+        if diff > 10000 then
+                minetest.log("warning", "[skybox] update for player " .. name .. " took " .. diff .. " us")
+        end
 
 				return
 			end
