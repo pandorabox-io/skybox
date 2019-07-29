@@ -1,4 +1,3 @@
-local has_armor_mod = minetest.get_modpath("3d_armor")
 
 skybox.register = function(def)
 	print("[skybox] registering " .. def.name .. " from " .. def.miny .. " to " .. def.maxy)
@@ -45,7 +44,6 @@ skybox.set_default_skybox = function(player)
 		speed={y=-2,x=-1}
 	})
 
-	player:set_physics_override({gravity=1, jump=1})
 end
 
 skybox.update_skybox = function(player)
@@ -62,12 +60,7 @@ skybox.update_skybox = function(player)
 	local box = skybox.get_skybox_for_player(player)
 
 	if box then
-		if current_skybox == box.name then
-			-- already active
-			player:set_physics_override({gravity=box.gravity})
-			return
-
-		else
+		if current_skybox ~= box.name then
 			minetest.log("action", "[skybox] Setting skybox: " .. box.name .. " for player " .. name)
 
 			-- new skybox
@@ -100,11 +93,6 @@ skybox.update_skybox = function(player)
 	end
 
 	skybox.set_default_skybox(player)
-end
-
-if has_armor_mod then
-	-- update physics if armor changed
-	armor:register_on_update(skybox.update_skybox)
 end
 
 minetest.register_globalstep(function(dtime)
