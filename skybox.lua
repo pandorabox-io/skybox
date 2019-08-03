@@ -76,7 +76,6 @@ skybox.update_skybox = function(player)
 
 			player:set_sky(sky_color, sky_type, box.textures or {})
 			player:set_clouds(box.clouds or {density=0,speed=0})
-			player:set_physics_override({gravity=box.gravity})
 			if box.always_day then
 				player:override_day_night_ratio(1)
 			end

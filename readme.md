@@ -10,7 +10,6 @@ skybox.register({
 	name = "earth_cave",
 	miny = -32000,
 	maxy = -50,
-	gravity = 1,
 	sky_type = "plain",
 	sky_color = {r=0, g=0, b=0}
 })
@@ -26,9 +25,7 @@ skybox.register({
 	name = "deepspace",
 	miny = 6001,
 	maxy = 10999,
-	gravity = 0.1,
 	always_day = true,
-	fly = true,
 	textures = {
 		"sky_pos_z.png",
 		"sky_neg_z.png^[transformR180",
