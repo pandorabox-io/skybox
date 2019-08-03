@@ -83,16 +83,18 @@ skybox.update_skybox = function(player)
 
 			return
 		end
+
+	else
+
+		-- set default skybox
+
+		if current_skybox == "" then
+			-- already in default
+			return
+		end
+
+		skybox.set_default_skybox(player)
 	end
-
-	-- set default skybox
-
-	if current_skybox == "" then
-		-- already in default
-		return
-	end
-
-	skybox.set_default_skybox(player)
 end
 
 minetest.register_globalstep(function(dtime)
