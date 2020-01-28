@@ -1,10 +1,4 @@
 
-skybox.register = function(def)
-	print("[skybox] registering " .. def.name .. " from " .. def.miny .. " to " .. def.maxy)
-	table.insert(skybox.list, def)
-end
-
-
 local timer = 0
 local skybox_cache = {} -- playername -> skybox name
 
@@ -17,22 +11,49 @@ skybox.get_skybox_for_player = function(player)
 		return
 	end
 
+	-- newly selected skybox, if any
+	local newbox
+
 	for _,box in pairs(skybox.list) do
-		if pos.y > box.miny and pos.y < box.maxy then
+		-- potential candidate, compared against priority
+		local candidate
+
+		if type(box.match) == "function" then
+			-- custom matcher
+			if box.match(player, pos) then
+				-- box matched
+				candidate = box
+			end
+
+		-- compare heights
+		elseif pos.y > box.miny and pos.y < box.maxy then
 			-- height match found
-			return box
+			candidate = box
+		end
+
+		if not newbox and candidate then
+			-- no old skybox, apply directly
+			newbox = candidate
+
+		elseif newbox and candidate then
+			-- compare priority, if any. otherwise ignore new box
+			if newbox.priority and candidate.priority then
+				if candidate.priority > newbox.priority then
+					-- select new box
+					newbox = candidate
+				end
+			elseif not newbox.priority and candidate.priority then
+				-- candidate has priority, select it
+				newbox = candidate
+			end
 		end
 	end
+
+	return newbox
 end
 
 -- sets the default skybox for the player
 skybox.set_default_skybox = function(player)
-	local name = player:get_player_name()
-
-	minetest.log("action", "[skybox] Restoring default skybox for player: " .. name)
-
-	skybox_cache[name] = ""
-
 	player:override_day_night_ratio(nil)
 	player:set_sky({r=0, g=0, b=0},"regular",{})
 	player:set_clouds({
@@ -92,6 +113,7 @@ skybox.update_skybox = function(player)
 			return
 		end
 
+		skybox_cache[name] = ""
 		skybox.set_default_skybox(player)
 	end
 end
