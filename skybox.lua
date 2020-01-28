@@ -72,6 +72,7 @@ skybox.update_skybox = function(player)
 	local name = player:get_player_name()
 
 	if skybox.ignore_players[name] then
+		skybox_cache[name] = nil
 		return
 	end
 
