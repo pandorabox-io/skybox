@@ -1,6 +1,8 @@
 
 # Skybox management mod
 
+![](https://github.com/pandorabox-io/skybox/workflows/luacheck/badge.svg)
+
 
 ## Cave example
 
