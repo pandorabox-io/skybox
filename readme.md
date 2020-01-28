@@ -3,11 +3,30 @@
 
 ![](https://github.com/pandorabox-io/skybox/workflows/luacheck/badge.svg)
 
+Register your skyboxes in a central place
 
-## Cave example
+# Api
 
 ```lua
--- earth caves
+-- register a skybox
+skybox.register(skybox_def)
+```
+
+* `skybox_def` (table)
+  * **name** id/name of the skybox, has to be unique
+	* **miny** minimum matching y-height
+	* **maxy** maximum y-height
+	* **sky_type** (*optional*) string to pass onto `player:set_sky()`
+	* **sky_color** (*optional*) color to pass onto `player:set_sky()`
+	* **always_day** (*optional*) day_night_ratio ratio is overriden to 1.0 if this is true
+	* **textures** (*optional*) 6 textures of a texured skybox
+	* **clouds** (*optional*) clouds to pass onto `player:set_clouds()`
+
+# Examples
+
+## Dark caves
+
+```lua
 skybox.register({
 	name = "earth_cave",
 	miny = -32000,
@@ -18,8 +37,8 @@ skybox.register({
 ```
 
 
-## Space example
-* fly mod
+## Space
+* auto-granted fly-priv
 
 ```lua
 skybox.register({
