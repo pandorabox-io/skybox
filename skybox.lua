@@ -71,6 +71,10 @@ skybox.update_skybox = function(player)
 	local pos = player:get_pos()
 	local name = player:get_player_name()
 
+	if skybox.ignore_players[name] then
+		return
+	end
+
 	if not pos then
 		-- yeah, it happens apparently :)
 		return

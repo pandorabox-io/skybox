@@ -1,6 +1,9 @@
 
 skybox = {
-  list = {}
+  list = {},
+
+  -- map name -> bool
+  ignore_players = {}
 }
 
 local MP = minetest.get_modpath("skybox")
