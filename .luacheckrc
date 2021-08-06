@@ -2,7 +2,8 @@ unused_args = false
 allow_defined_top = true
 
 globals = {
-	"skybox"
+	"skybox",
+	"travelnet"
 }
 
 read_globals = {
@@ -13,12 +14,5 @@ read_globals = {
 	-- Minetest
 	"minetest",
 	"vector", "ItemStack",
-	"dump",
-
-	-- Deps
-	"unified_inventory", "default", "advtrains",
-	"armor",
-
-	-- optional mods
-	"xban"
+	"dump"
 }
