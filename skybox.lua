@@ -3,7 +3,7 @@ local timer = 0
 local skybox_cache = {} -- playername -> skybox name
 
 -- returns the skybox or nil
-skybox.get_skybox_for_player = function(player)
+function skybox.get_skybox_for_player(player)
 	local pos = player:get_pos()
 
 	if not pos then
@@ -53,9 +53,30 @@ skybox.get_skybox_for_player = function(player)
 end
 
 -- sets the default skybox for the player
-skybox.set_default_skybox = function(player)
+function skybox.set_default_skybox(player)
 	player:override_day_night_ratio(nil)
-	player:set_sky({r=0, g=0, b=0},"regular",{})
+
+	if player.set_sun and player.set_moon and player.set_stars and false then
+		-- new api
+		-- https://github.com/minetest/minetest/blob/4a3728d828fa8896b49e80fdc68f5d7647bf45b7/src/skyparams.h#L75-L88
+		player:set_sky({
+			clouds = true,
+			sky_color = {
+				day_sky = "#61b5f5",
+				day_horizon = "#90d3f6",
+				dawn_sky = "#b4bafa",
+				dawn_horizon = "#bac1f0",
+				night_sky = "#006bff",
+				night_horizon = "#4090ff",
+				indoors = "#646464",
+				fog_tint_type = "default",
+			}
+		})
+	else
+		-- old api
+		player:set_sky({r=0, g=0, b=0},"regular",{})
+	end
+
 	player:set_clouds({
 		thickness=16,
 		color={r=243, g=214, b=255, a=229},
@@ -67,7 +88,7 @@ skybox.set_default_skybox = function(player)
 
 end
 
-skybox.update_skybox = function(player)
+function skybox.update_skybox(player)
 	local pos = player:get_pos()
 	local name = player:get_player_name()
 
