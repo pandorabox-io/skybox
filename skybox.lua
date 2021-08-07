@@ -56,7 +56,7 @@ end
 function skybox.set_default_skybox(player)
 	player:override_day_night_ratio(nil)
 
-	if player.set_sun and player.set_moon and player.set_stars and false then
+	if player.set_sun and player.set_moon and player.set_stars then
 		-- new api
 		-- https://github.com/minetest/minetest/blob/4a3728d828fa8896b49e80fdc68f5d7647bf45b7/src/skyparams.h#L75-L88
 		player:set_sky({
