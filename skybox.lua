@@ -56,26 +56,25 @@ end
 function skybox.set_default_skybox(player)
 	player:override_day_night_ratio(nil)
 
-	if player.set_sun and player.set_moon and player.set_stars then
-		-- new api
-		-- https://github.com/minetest/minetest/blob/4a3728d828fa8896b49e80fdc68f5d7647bf45b7/src/skyparams.h#L75-L88
-		player:set_sky({
-			clouds = true,
-			sky_color = {
-				day_sky = "#61b5f5",
-				day_horizon = "#90d3f6",
-				dawn_sky = "#b4bafa",
-				dawn_horizon = "#bac1f0",
-				night_sky = "#006bff",
-				night_horizon = "#4090ff",
-				indoors = "#646464",
-				fog_tint_type = "default",
-			}
-		})
-	else
-		-- old api
-		player:set_sky({r=0, g=0, b=0},"regular",{})
-	end
+	-- https://github.com/minetest/minetest/blob/4a3728d828fa8896b49e80fdc68f5d7647bf45b7/src/skyparams.h#L75-L88
+	player:set_sky({
+		clouds = true,
+		type = "regular",
+		sky_color = {
+			day_sky = "#61b5f5",
+			day_horizon = "#90d3f6",
+			dawn_sky = "#b4bafa",
+			dawn_horizon = "#bac1f0",
+			night_sky = "#006bff",
+			night_horizon = "#4090ff",
+			indoors = "#646464",
+			fog_tint_type = "default",
+		}
+	})
+
+	player:set_moon({ visible = true })
+	player:set_sun({ visible = true })
+	player:set_stars({ visible = true })
 
 	player:set_clouds({
 		thickness=16,
@@ -118,11 +117,28 @@ function skybox.update_skybox(player)
 				minetest.chat_send_player(name, box.message)
 			end
 
-			local sky_type = box.sky_type or "skybox"
-			local sky_color = box.sky_color or {r=0, g=0, b=0}
+			player:set_sky({
+				type = box.sky_type or "skybox",
+				base_color = box.sky_color or {r=0, g=0, b=0},
+				textures = box.textures,
+				sky_color = {
+					day_sky = "#000000",
+					day_horizon = "#000000",
+					dawn_sky = "#000000",
+					dawn_horizon = "#000000",
+					night_sky = "#000000",
+					night_horizon = "#000000",
+					indoors = "#000000",
+					fog_tint_type = "default",
+				}
+			})
 
-			player:set_sky(sky_color, sky_type, box.textures or {})
+			player:set_moon({ visible = false })
+			player:set_sun({ visible = false })
+			player:set_stars({ visible = false })
+
 			player:set_clouds(box.clouds or {density=0,speed=0})
+
 			if box.always_day then
 				player:override_day_night_ratio(1)
 			end
@@ -139,6 +155,7 @@ function skybox.update_skybox(player)
 			return
 		end
 
+		minetest.log("action", "[skybox] Setting default skybox for player " .. name)
 		skybox_cache[name] = ""
 		skybox.set_default_skybox(player)
 	end
