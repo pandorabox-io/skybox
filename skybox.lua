@@ -73,7 +73,7 @@ function skybox.set_default_skybox(player)
 	})
 
 	player:set_moon({ visible = true })
-	player:set_sun({ visible = true })
+	player:set_sun({ visible = true, sunrise_visible = true })
 	player:set_stars({ visible = true })
 
 	player:set_clouds({
@@ -134,7 +134,7 @@ function skybox.update_skybox(player)
 			})
 
 			player:set_moon({ visible = false })
-			player:set_sun({ visible = false })
+			player:set_sun({ visible = false, sunrise_visible = false })
 			player:set_stars({ visible = false })
 
 			player:set_clouds(box.clouds or {density=0,speed=0})
