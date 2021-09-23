@@ -79,20 +79,15 @@ skybox.register({
 
 # Override the default skybox
 
-The function `skybox.set_default_skybox(player)` can be overriden to apply a custom default skybox:
+The function `skybox.set_defaults` can be called with new default values:
 
 ```lua
-skybox.set_default_skybox = function(player)
-	player:override_day_night_ratio(nil)
-	player:set_sky({r=0, g=0, b=0},"regular",{})
-	player:set_clouds({
-		thickness=16,
-		color={r=243, g=214, b=255, a=229},
-		ambient={r=0, g=0, b=0, a=255},
-		density=0.4,
-		height=200,
-		speed={y=-2,x=-1}
-	})
-
-end
+-- set the default values (everything is optional)
+skybox.set_defaults({
+	sky = {...}, -- sky definition
+	moon = {...},
+	stars = {...},
+	clouds = {...},
+	sun = {...}
+})
 ```
